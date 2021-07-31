@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8'?>
+<wsdl:definitions name="ServiceEvaluateWebServiceImplService"
+                  targetNamespace="http://www.robdchina.com"
+                  xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://www.robdchina.com"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- types中定义了函数使用的变量及数据类型 -->
+    <wsdl:types>
+        <xs:schema targetNamespace="http://www.robdchina.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <!-- 定义一个数组返回值变量returnData -->
+            <xs:complexType name="returnData">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="INFO" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="STATUS" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <!-- 定义一个数组变量variableNameOne -->
+            <xs:complexType name="variableNameOne">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="KEYONE" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="KEYTWO" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="KEYTHREE" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <!-- 定义一个数组变量variableNameTwo -->
+            <xs:complexType name="variableNameTwo">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="KEYONE" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="KEYTWO" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="KEYTHREE" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="KEYFOUR" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:simpleType name="emailAddress">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value=".+@.+"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+            <xs:simpleType name="number">
+                <xs:restriction base="xs:int">
+                    <xs:pattern value="\d+" />
+                </xs:restriction>
+            </xs:simpleType>
+            <!-- 定义一个数组变量variableNameThree -->
+            <xs:complexType name="variableNameThree">
+                <xs:complexContent>
+                    <xs:extension base="tns:variableNameTwo">
+                        <xs:sequence>
+                            <xs:element name="KEYFIVE" type="tns:emailAddress"/>
+                            <xs:element name="KEYSIX" type="tns:number"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <!-- 定义一个异常变量Exception -->
+            <xs:element name="Exception" type="tns:Exception"></xs:element>
+            <xs:complexType name="Exception">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+
+        </xs:schema>
+    </wsdl:types>
+
+    <!-- message定义类文件使用的方法名 -->
+    <wsdl:message name="functionNameOne">
+        <wsdl:part name="VariableNameOne" type="tns:variableNameOne">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="functionNameOneResponse">
+        <wsdl:part name="return" type="tns:returnData">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="functionNameTwo">
+        <wsdl:part name="VariableNameTwo" type="tns:variableNameTwo">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="functionNameTwoResponse">
+        <wsdl:part name="return" type="tns:returnData">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="functionNameThree">
+        <wsdl:part name="VariableNameThree" type="tns:variableNameThree">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="functionNameThreeResponse">
+        <wsdl:part name="return" type="tns:returnData">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="Exception">
+        <wsdl:part element="tns:Exception" name="Exception">
+        </wsdl:part>
+    </wsdl:message>
+
+    <!-- protType将message中的方法名做成逻辑操作 -->
+    <wsdl:portType name="RobotWebService">
+        <wsdl:operation name="functionNameOne">
+            <wsdl:input message="tns:functionNameOne" name="functionNameOne"></wsdl:input>
+            <wsdl:output message="tns:functionNameOneResponse" name="functionNameOneResponse"></wsdl:output>
+            <wsdl:fault message="tns:Exception" name="Exception"></wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="functionNameTwo">
+            <wsdl:input message="tns:functionNameTwo" name="functionNameTwo"></wsdl:input>
+            <wsdl:output message="tns:functionNameTwoResponse" name="functionNameTwoResponse"></wsdl:output>
+            <wsdl:fault message="tns:Exception" name="Exception"></wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="functionNameThree">
+            <wsdl:input message="tns:functionNameThree" name="functionNameThree"></wsdl:input>
+            <wsdl:output message="tns:functionNameThreeResponse" name="functionNameThreeResponse"></wsdl:output>
+            <wsdl:fault message="tns:Exception" name="Exception"></wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- bingding描述如何将portType 映射成传输/消息传递协议 -->
+    <wsdl:binding name="EvaluateWebServiceSoapBinding" type="tns:RobotWebService">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+        <wsdl:operation name="functionNameOne">
+            <soap:operation soapAction="" style="rpc"></soap:operation>
+            <wsdl:input name="functionNameOne">
+                <soap:body namespace="http://www.robdchina.com" use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output name="functionNameOneResponse">
+                <soap:body namespace="http://www.robdchina.com" use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="Exception">
+                <soap:fault name="Exception" use="literal"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="functionNameTwo">
+            <soap:operation soapAction="" style="rpc"></soap:operation>
+            <wsdl:input name="functionNameTwo"><soap:body namespace="http://www.robdchina.com" use="literal"></soap:body></wsdl:input>
+            <wsdl:output name="functionNameTwoResponse"><soap:body namespace="http://www.robdchina.com" use="literal"></soap:body></wsdl:output>
+            <wsdl:fault name="Exception"><soap:fault name="Exception" use="literal"></soap:fault></wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="functionNameThree">
+            <soap:operation soapAction="" style="rpc"></soap:operation>
+            <wsdl:input name="functionNameThree"><soap:body namespace="http://www.robdchina.com" use="literal"></soap:body></wsdl:input>
+            <wsdl:output name="functionNameThreeResponse"><soap:body namespace="http://www.robdchina.com" use="literal"></soap:body></wsdl:output>
+            <wsdl:fault name="Exception"><soap:fault name="Exception" use="literal"></soap:fault></wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- service列出某个特定绑定的连接信息 -->
+    <wsdl:service name="ServiceEvaluateWebServiceImplService">
+        <wsdl:port binding="tns:EvaluateWebServiceSoapBinding" name="EvaluateWebServiceImplPort">
+            <!-- location为后台要调用的接口 -->
+            <soap:address location="http://wsdl.test/server.php"></soap:address>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
